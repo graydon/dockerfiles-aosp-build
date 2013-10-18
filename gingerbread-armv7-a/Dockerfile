@@ -42,12 +42,15 @@ RUN chmod a+x /usr/local/bin/repo
 RUN mkdir /aosp
 RUN cd /aosp && repo init -u https://android.googlesource.com/platform/manifest -b android-2.3.7_r1
 RUN cd /aosp && repo sync -j 16
-RUN cd /aosp repo forall platform/external/qemu -c git checkout aosp/tools_r12
+RUN cd /aosp && repo forall platform/external/qemu -c git checkout aosp/tools_r12
+
+# if trying to minimize space in a layer, replace previous two lines with this:
+# RUN cd /aosp && repo sync -j 16 && repo forall platform/external/qemu -c git checkout aosp/tools_r12 && rm -Rf .repo prebuilt/darwin* prebuilt/windows*
 
 # Build gingerbread
 RUN apt-get install -y zlib1g-dev
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN /bin/bash -c 'cd /aosp && . build/envsetup.sh && lunch 1 && make -j 16 TARGET_ARCH_VARIANT=armv7-a CC=gcc-4.4 CXX=g++-4.4'
 
-# Run emulator
+# Run emulator by default
 CMD aosp/out/host/linux-x86/bin/emulator -no-window -show-kernel -kernel goldfish/arch/arm/boot/zImage -qemu -cpu cortex-a8

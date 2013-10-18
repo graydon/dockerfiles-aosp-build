@@ -40,7 +40,7 @@ popd
 
 # Fetch AOSP gingerbread and update qemu to R12
 mkdir -p ~/bin
-curl http://commondatastorage.googleapis.com/git-repo-downloads/repo >~/bin
+curl http://commondatastorage.googleapis.com/git-repo-downloads/repo >~/bin/repo
 chmod a+x ~/bin/repo
 export PATH=~/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
